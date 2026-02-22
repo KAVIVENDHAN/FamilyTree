@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — Family Tree App</title>
+    <meta name="description" content="Create a new family tree account.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="auth-container">
+        <div class="glass-card">
+            <div class="auth-brand">
+                <div class="auth-brand-icon">🌳</div>
+                <h2>Create Account</h2>
+                <p class="auth-subtitle">Start building your family tree</p>
+            </div>
+            <div id="message" class="message"></div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required placeholder="Choose a username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Choose a password">
+                </div>
+                <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+            <p class="link-text">Already have an account? <a href="login.html">Sign in</a></p>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#registerForm').on('submit', function (e) {
+                e.preventDefault();
+                const username = $('#username').val();
+                const password = $('#password').val();
+
+                const result = Auth.register(username, password);
+                if (result.success) {
+                    $('#message').text(result.message).removeClass('error').addClass('success').show();
+                    setTimeout(() => window.location.href = 'login.html', 1500);
+                } else {
+                    $('#message').text(result.message).removeClass('success').addClass('error').show();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

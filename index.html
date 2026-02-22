@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Tree</title>
+    <meta name="description" content="Build and visualize your family tree with an interactive, beautiful interface.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="user-info">
+            <div class="brand">
+                <span class="brand-icon">🌳</span>
+                Family Tree
+            </div>
+            <span style="margin-left: 0.75rem; font-weight: 400;">of <span id="displayUsername"></span></span>
+        </div>
+        <div class="btn-group">
+            <button id="createFamilyBtn" class="btn-primary">➕ Create New Family</button>
+            <input type="file" id="importInput" accept=".json" style="display: none;">
+            <button id="importBtn" class="btn-secondary">⬆️ Import</button>
+            <button id="saveBtn" class="btn-secondary">💾 Save</button>
+            <button id="downloadBtn" class="btn-secondary">⬇️ Download</button>
+            <button id="logoutBtn" class="btn-secondary">Logout</button>
+        </div>
+    </nav>
+
+    <div class="tree-container">
+        <div id="tree-root" class="tree">
+            <!-- Tree will be rendered here -->
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Add/Edit Modal -->
+    <div id="memberModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add Member</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="memberForm">
+                <input type="hidden" id="nodeId">
+                <input type="hidden" id="parentId">
+
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" required placeholder="Full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="relation">Relation</label>
+                    <input list="relations" id="relation" placeholder="Select or type relation">
+                    <datalist id="relations">
+                        <option value="Father">
+                        <option value="Mother">
+                        <option value="Spouse">
+                        <option value="Son">
+                        <option value="Daughter">
+                        <option value="Brother">
+                        <option value="Sister">
+                        <option value="Grandfather">
+                        <option value="Grandmother">
+                    </datalist>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" required>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob">
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location (Google Maps Link)</label>
+                    <input type="url" id="location" placeholder="https://maps.google.com/...">
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" placeholder="City, Country">
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" rows="3" placeholder="Any additional notes..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="photo">Photo URL</label>
+                    <input type="url" id="photo" placeholder="https://example.com/photo.jpg">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary close-modal-btn">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Member</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Link Member Modal -->
+    <div id="linkModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Link Member to Another Family</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="linkForm">
+                <input type="hidden" id="linkSourceId">
+                <div class="form-group">
+                    <label>Action</label>
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-muted);">
+                        Link <strong id="linkSourceName" style="color: var(--text-bright);"></strong> as the:
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="linkRelation">Relationship</label>
+                    <select id="linkRelation" required>
+                        <option value="" disabled selected>Select Relationship</option>
+                        <option value="Spouse">Spouse</option>
+                        <option value="Child">Child</option>
+                        <option value="Parent">Parent</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="linkTargetId">To Member</label>
+                    <select id="linkTargetId" required>
+                        <!-- Options generated by JS -->
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary close-modal-btn">Cancel</button>
+                    <button type="submit" class="btn-primary">Link Members</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

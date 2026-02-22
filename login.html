@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Family Tree App</title>
+    <meta name="description" content="Log in to your family tree account.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="auth-container">
+        <div class="glass-card">
+            <div class="auth-brand">
+                <div class="auth-brand-icon">🌳</div>
+                <h2>Welcome Back</h2>
+                <p class="auth-subtitle">Sign in to your family tree</p>
+            </div>
+            <div id="message" class="message"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required placeholder="Enter your username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+            <p class="link-text">Don't have an account? <a href="register.html">Create one</a></p>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        $(document).ready(function () {
+            if (Auth.getCurrentUser()) {
+                window.location.href = 'index.html';
+            }
+
+            $('#loginForm').on('submit', function (e) {
+                e.preventDefault();
+                const username = $('#username').val();
+                const password = $('#password').val();
+
+                const result = Auth.login(username, password);
+                if (result.success) {
+                    window.location.href = 'index.html';
+                } else {
+                    $('#message').text(result.message).removeClass('success').addClass('error').show();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
